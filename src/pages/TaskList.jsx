@@ -2,9 +2,9 @@ import { useGlobal } from "../context/GlobalContext";
 import TaskRow from "../components/TaskRow";
 
 export default function TaskList() {
-  const { tasks, setTasks } = useGlobal();
+  const { tasksData } = useGlobal();
 
-  console.log(tasks);
+  console.log(tasksData);
 
   return (
     <section>
@@ -18,7 +18,7 @@ export default function TaskList() {
         </thead>
 
         <tbody>
-          {tasks.map((task) => (
+          {tasksData.tasks.map((task) => (
             <TaskRow key={task.id} task={task} />
           ))}
         </tbody>
