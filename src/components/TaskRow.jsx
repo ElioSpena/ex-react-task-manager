@@ -3,13 +3,12 @@ import { Link } from "react-router-dom";
 
 function TaskRow({ task }) {
   const status = task.status.toLowerCase();
-
   let color;
 
   if (status === "to do") {
     color = "red";
   } else if (status === "doing") {
-    color = "yellow";
+    color = "orange";
   } else if (status === "done") {
     color = "green";
   }
