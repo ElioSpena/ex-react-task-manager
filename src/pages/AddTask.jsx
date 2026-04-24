@@ -1,29 +1,34 @@
 import { useState, useRef } from "react";
+import useTasks from "../hooks/useTasks";
 
 export default function AddTask() {
   const [title, setTitle] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const description = useRef(null);
   const status = useRef(null);
+  const { tasks, addTask } = useTasks();
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    if (!title.trim()) {
+      setErrorMessage("Campo obbligatorio!");
+      return;
+    }
 
     const newTask = {
       title,
       description: description.current.value,
       status: status.current.value,
     };
-
-    if (!title.trim()) {
-      setErrorMessage("Campo obbligatorio!");
-      return;
-    }
     console.log(newTask);
 
+    addTask(newTask);
+    
     setTitle("");
     description.current.value = "";
-    status.current.value = "to-do";
+    status.current.value = "To do";
   }
 
   function handleChange(e) {
@@ -53,9 +58,9 @@ export default function AddTask() {
         <div>
           <label htmlFor="status">Status</label>
           <select ref={status} id="status" defaultValue="to-do">
-            <option value="to-do">To do</option>
-            <option value="doing">Doing</option>
-            <option value="done">Done</option>
+            <option value="To do">To do</option>
+            <option value="Doing">Doing</option>
+            <option value="Done">Done</option>
           </select>
         </div>
         <button type="submit">Invia</button>
