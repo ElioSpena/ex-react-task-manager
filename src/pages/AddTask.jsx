@@ -9,8 +9,6 @@ export default function AddTask() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  //SUBMIT FORM
-
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -36,8 +34,6 @@ export default function AddTask() {
     }
   }
 
-  //HANDLE CHANGE
-
   function handleChange(e) {
     const value = e.target.value;
     const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
@@ -51,26 +47,58 @@ export default function AddTask() {
   }
 
   return (
-    <section>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Nome</label>
-          <input value={title} onChange={handleChange} type="text" id="title" />
-          {errorMessage && <span>{errorMessage}</span>}
+    <section className="container py-4 d-flex justify-content-center">
+      <form
+        onSubmit={handleSubmit}
+        className="w-100 "
+        style={{ maxWidth: "400px" }}
+      >
+        <div className="mb-3">
+          <label htmlFor="title" className="form-label">
+            Nome
+          </label>
+          <input
+            value={title}
+            onChange={handleChange}
+            type="text"
+            id="title"
+            className="form-control"
+          />
+          {errorMessage && (
+            <div className="form-text text-danger">{errorMessage}</div>
+          )}
         </div>
-        <div>
-          <label htmlFor="description">Descrizione</label>
-          <textarea ref={description} id="description" />
+
+        <div className="mb-3">
+          <label htmlFor="description" className="form-label">
+            Descrizione
+          </label>
+          <textarea
+            ref={description}
+            id="description"
+            className="form-control"
+          />
         </div>
-        <div>
-          <label htmlFor="status">Status</label>
-          <select ref={status} id="status" defaultValue="to-do">
+
+        <div className="mb-3">
+          <label htmlFor="status" className="form-label">
+            Status
+          </label>
+          <select
+            ref={status}
+            id="status"
+            defaultValue="To do"
+            className="form-select"
+          >
             <option value="To do">To do</option>
             <option value="Doing">Doing</option>
             <option value="Done">Done</option>
           </select>
         </div>
-        <button type="submit">Invia</button>
+
+        <button type="submit" className="btn btn-primary w-100">
+          Invia
+        </button>
       </form>
     </section>
   );

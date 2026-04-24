@@ -37,7 +37,11 @@ export default function useTask() {
   };
 
   //DELETE TASK
-  const removeTask = () => {};
+  const removeTask = () => {
+    
+
+
+  };
   const updateTask = () => {};
 
   return { tasks, addTask, removeTask, updateTask };

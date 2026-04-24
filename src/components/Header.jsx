@@ -1,12 +1,20 @@
 import { NavLink } from "react-router-dom";
 
 export default function Header() {
+  const links = [
+    { path: "/", name: "Home" },
+    { path: "/add-task", name: "Add task" },
+    { path: "/task-list", name: "Task list" },
+  ];
+
   return (
-    <header>
-      <nav>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/add-task">Add task</NavLink>
-        <NavLink to="/task-list">Task list</NavLink>
+    <header className="border-bottom mb-3">
+      <nav className="container d-flex gap-3 py-3 justify-content-center">
+        {links.map((l) => (
+          <NavLink className="text-decoration-none" to={l.path}>
+            {l.name}
+          </NavLink>
+        ))}
       </nav>
     </header>
   );

@@ -7,23 +7,24 @@ export default function TaskList() {
   console.log(tasksData);
 
   return (
-    <section>
-      <table>
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Stato</th>
-            <th>Data di Creazione</th>
-          </tr>
-        </thead>
+    <section className="container py-4 d-flex justify-content-center">
+      <div className="w-100">
+        <table className="table table-striped table-hover table-bordered align-middle">
+          <thead className="table-light text-center">
+            <tr>
+              <th>Nome</th>
+              <th>Stato</th>
+              <th>Data di Creazione</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {tasksData.tasks.map((task) => (
-            <TaskRow key={task.id} task={task} />
-            
-          ))}
-        </tbody>
-      </table>
+          <tbody>
+            {tasksData.tasks.map((task) => (
+              <TaskRow key={task.id} task={task} />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }
