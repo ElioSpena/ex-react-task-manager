@@ -20,6 +20,7 @@ export default function TaskList() {
         <tbody>
           {tasksData.tasks.map((task) => (
             <TaskRow key={task.id} task={task} />
+            
           ))}
         </tbody>
       </table>

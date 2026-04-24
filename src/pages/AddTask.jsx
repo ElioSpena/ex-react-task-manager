@@ -9,6 +9,8 @@ export default function AddTask() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
+  //SUBMIT FORM
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -33,6 +35,8 @@ export default function AddTask() {
       alert(err.message);
     }
   }
+
+  //HANDLE CHANGE
 
   function handleChange(e) {
     const value = e.target.value;
