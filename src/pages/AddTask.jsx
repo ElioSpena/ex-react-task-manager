@@ -9,7 +9,7 @@ export default function AddTask() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (!title.trim()) {
@@ -22,13 +22,16 @@ export default function AddTask() {
       description: description.current.value,
       status: status.current.value,
     };
-    console.log(newTask);
 
-    addTask(newTask);
-    
-    setTitle("");
-    description.current.value = "";
-    status.current.value = "To do";
+    try {
+      await addTask(newTask);
+      setTitle("");
+      description.current.value = "";
+      status.current.value = "To do";
+      alert("Task creata con successo!");
+    } catch (err) {
+      alert(err.message);
+    }
   }
 
   function handleChange(e) {

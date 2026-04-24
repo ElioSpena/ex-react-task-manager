@@ -17,29 +17,23 @@ export default function useTask() {
   }, []);
 
   //CREATE TASK
-  const addTask = (task) => {
-    (async () => {
-      try {
-        const resp = await fetch(`${url}/tasks`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(task),
-        });
 
-        const createdTask = await resp.json();
+  const addTask = async (task) => {
+    const resp = await fetch(`${url}/tasks`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    });
 
-        if (!createdTask.success) {
-          throw new Error(createdTask.message);
-        } else {
-          setTasks((prev) => [...prev, createdTask]);
-          console.log("Task creata");
-        }
-      } catch (err) {
-        console.log(err.message);
-      }
-    })();
+    const createdTask = await resp.json();
+
+    if (!createdTask.success) {
+      throw new Error(createdTask.message);
+    }
+    setTasks((prev) => [...prev, createdTask]);
+    return createdTask.task;
   };
 
   //DELETE TASK
