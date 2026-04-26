@@ -14,8 +14,8 @@ export default function TaskDetail() {
   async function handleDelete() {
     try {
       const resp = await tasksData.removeTask(Number(id));
-
-      !show && navigate("/task-list");
+      alert("Task eliminata!");
+      navigate("/task-list");
     } catch (err) {
       alert(err.message);
     }
