@@ -32,7 +32,7 @@ export default function useTask() {
     if (!createdTask.success) {
       throw new Error(createdTask.message);
     }
-    setTasks((prev) => [...prev, createdTask]);
+    setTasks((prev) => [...prev, createdTask.task]);
     return createdTask.task;
   };
 
@@ -47,5 +47,5 @@ export default function useTask() {
   };
   const updateTask = () => {};
 
-  return { tasks, addTask, removeTask, updateTask };
+  return { tasks, setTasks, addTask, removeTask, updateTask };
 }

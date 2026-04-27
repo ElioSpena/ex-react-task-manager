@@ -7,7 +7,7 @@ function GlobalProvider({ children }) {
   const tasksData = useTasks();
 
   return (
-    <GlobalContext.Provider value={{ tasksData }}>
+    <GlobalContext.Provider value={tasksData}>
       {children}
     </GlobalContext.Provider>
   );

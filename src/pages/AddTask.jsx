@@ -1,11 +1,11 @@
 import { useState, useRef } from "react";
-import useTasks from "../hooks/useTasks";
+import { useGlobal } from "../context/GlobalContext";
 
 export default function AddTask() {
   const [title, setTitle] = useState("");
   const description = useRef(null);
   const status = useRef(null);
-  const { tasks, addTask } = useTasks();
+  const { tasks, addTask } = useGlobal();
 
   const [errorMessage, setErrorMessage] = useState("");
 

@@ -4,16 +4,16 @@ import Modal from "../components/Modal";
 import { useState } from "react";
 
 export default function TaskDetail() {
-  const { tasksData } = useGlobal();
+  const { tasks, removeTask } = useGlobal();
   const { id } = useParams();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
 
-  const task = tasksData.tasks.find((t) => t.id === Number(id));
+  const task = tasks.find((t) => t.id === Number(id));
 
   async function handleDelete() {
     try {
-      const resp = await tasksData.removeTask(Number(id));
+      const resp = await removeTask(Number(id));
       alert("Task eliminata!");
       navigate("/task-list");
     } catch (err) {

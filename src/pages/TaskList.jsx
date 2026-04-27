@@ -2,9 +2,7 @@ import { useGlobal } from "../context/GlobalContext";
 import TaskRow from "../components/TaskRow";
 
 export default function TaskList() {
-  const { tasksData } = useGlobal();
-
-  console.log(tasksData);
+  const { tasks } = useGlobal();
 
   return (
     <section className="container py-4 d-flex justify-content-center">
@@ -19,8 +17,8 @@ export default function TaskList() {
           </thead>
 
           <tbody>
-            {tasksData.tasks.map((task) => (
-              <TaskRow key={task.id} task={task} />
+            {tasks.map((task, id) => (
+              <TaskRow key={id} task={task} />
             ))}
           </tbody>
         </table>
