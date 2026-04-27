@@ -1,21 +1,33 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useGlobal } from "../context/GlobalContext";
-import Modal from "../components/Modal";
 import { useState } from "react";
 
+import Modal from "../components/Modal";
+import EditTaskModal from "../components/EditTaskModal";
+
 export default function TaskDetail() {
-  const { tasks, removeTask } = useGlobal();
+  const { tasks, removeTask, updateTask } = useGlobal();
   const { id } = useParams();
   const navigate = useNavigate();
-  const [show, setShow] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
 
   const task = tasks.find((t) => t.id === Number(id));
-
   async function handleDelete() {
     try {
       const resp = await removeTask(Number(id));
       alert("Task eliminata!");
       navigate("/task-list");
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
+  async function handleUpdate(updatedTask) {
+    try {
+      await updateTask(updatedTask);
+      alert("Task modificata con successo!");
+      setShowEdit(false);
     } catch (err) {
       alert(err.message);
     }
@@ -38,18 +50,36 @@ export default function TaskDetail() {
             {task.createdAt}
           </span>
 
-          <button onClick={() => setShow(true)} className="btn btn-danger">
-            Cancella
-          </button>
+          <div className="d-flex justify-content-end gap-3">
+            <button
+              onClick={() => setShowDelete(true)}
+              className="btn btn-danger"
+            >
+              Cancella
+            </button>
+            <button
+              onClick={() => setShowEdit(true)}
+              className="btn btn-warning"
+            >
+              Modifica
+            </button>
+          </div>
         </div>
       </article>
 
       <Modal
-        show={show}
+        show={showDelete}
         title={task.title}
         content={task.description}
-        onClose={() => setShow(false)}
+        onClose={() => setShowDelete(false)}
         onConfirm={handleDelete}
+      />
+
+      <EditTaskModal
+        show={showEdit}
+        task={task}
+        onClose={() => setShowEdit(false)}
+        onSave={handleUpdate}
       />
     </section>
   );

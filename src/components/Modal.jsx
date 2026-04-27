@@ -9,6 +9,7 @@ export default function Modal({
   confirmText,
 }) {
   const modalRoot = document.getElementById("modal");
+
   return (
     show &&
     createPortal(
@@ -21,9 +22,7 @@ export default function Modal({
                 <h5 className="modal-title">{title}</h5>
               </div>
 
-              <div className="modal-body">
-                <p>{content}</p>
-              </div>
+              <div className="modal-body">{content}</div>
 
               <div className="modal-footer">
                 <button className="btn btn-secondary" onClick={onClose}>

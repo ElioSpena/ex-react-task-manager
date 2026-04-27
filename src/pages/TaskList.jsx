@@ -4,6 +4,7 @@ import TaskRow from "../components/TaskRow";
 export default function TaskList() {
   const { tasks } = useGlobal();
 
+
   return (
     <section className="container py-4 d-flex justify-content-center">
       <div className="w-100">
