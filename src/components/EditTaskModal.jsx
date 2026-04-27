@@ -41,6 +41,7 @@ export default function EditTaskModal({ show, onClose, task, onSave }) {
 
   return (
     <Modal
+      onClose={onClose}
       show={show}
       title="Modifica Task"
       content={
