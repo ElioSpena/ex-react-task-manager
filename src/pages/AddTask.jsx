@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import { useGlobal } from "../context/GlobalContext";
 
 export default function AddTask() {
@@ -7,15 +7,22 @@ export default function AddTask() {
   const status = useRef(null);
   const { addTask } = useGlobal();
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
+
+  //CONTROLLO INPUT
+
+  const taskTitleError = useMemo(() => {
+    if (!title.trim()) return "Campo obbligatorio!";
+    if ([...title].some((char) => symbols.includes(char)))
+      return "Il titolo non può contenere caratteri speciali!";
+
+    return "";
+  }, [title]);
+
+  //SUBMIT
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    if (!title.trim()) {
-      setErrorMessage("Campo obbligatorio!");
-      return;
-    }
 
     const newTask = {
       title,
@@ -34,18 +41,6 @@ export default function AddTask() {
     }
   }
 
-  function handleChange(e) {
-    const value = e.target.value;
-    const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
-
-    if ([...value].some((c) => symbols.includes(c))) {
-      setErrorMessage("Il titolo non può contenere caratteri speciali!");
-      return;
-    }
-    setErrorMessage("");
-    setTitle(value);
-  }
-
   return (
     <section className="container py-4 d-flex justify-content-center">
       <form
@@ -59,13 +54,13 @@ export default function AddTask() {
           </label>
           <input
             value={title}
-            onChange={handleChange}
+            onChange={(e) => setTitle(e.target.value)}
             type="text"
             id="title"
             className="form-control"
           />
-          {errorMessage && (
-            <div className="form-text text-danger">{errorMessage}</div>
+          {taskTitleError && (
+            <div className="form-text text-danger">{taskTitleError}</div>
           )}
         </div>
 
@@ -90,13 +85,22 @@ export default function AddTask() {
             defaultValue="To do"
             className="form-select"
           >
-            <option value="To do">To do</option>
+            {["To do", "Doing", "Done"].map((value, index) => (
+              <option key={index} value={value}>
+                {value}
+              </option>
+            ))}
+
             <option value="Doing">Doing</option>
             <option value="Done">Done</option>
           </select>
         </div>
 
-        <button type="submit" className="btn btn-primary w-100">
+        <button
+          disabled={taskTitleError}
+          type="submit"
+          className="btn btn-primary w-100"
+        >
           Invia
         </button>
       </form>
