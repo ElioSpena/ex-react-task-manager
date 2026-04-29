@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import formatDate from "../utilities/formatDate";
 
 function TaskRow({ task, checked, onToggle }) {
   const status = task.status.toLowerCase();
@@ -19,6 +20,7 @@ function TaskRow({ task, checked, onToggle }) {
     <tr
       onClick={() => navigate(`/task/${task.id}`)}
       style={{ cursor: "pointer" }}
+      className="text-center"
     >
       <td className="d-flex gap-3">
         <input
@@ -31,7 +33,7 @@ function TaskRow({ task, checked, onToggle }) {
       </td>
 
       <td style={{ color }}>{task.status}</td>
-      <td>{task.createdAt}</td>
+      <td>{formatDate(task.createdAt)}</td>
     </tr>
   );
 }

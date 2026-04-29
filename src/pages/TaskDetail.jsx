@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import Modal from "../components/Modal";
 import EditTaskModal from "../components/EditTaskModal";
+import formatDate from "../utilities/formatDate.js";
 
 export default function TaskDetail() {
   const { tasks, removeTask, updateTask } = useGlobal();
@@ -51,7 +52,7 @@ export default function TaskDetail() {
           </div>
 
           <span className="text-muted small d-block mb-3">
-            {task.createdAt}
+            {formatDate(task.createdAt)}
           </span>
 
           <div className="d-flex justify-content-end gap-3">
