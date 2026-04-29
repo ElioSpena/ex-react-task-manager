@@ -73,14 +73,18 @@ export default function TaskList() {
     <section className="container py-4 d-flex justify-content-center">
       <div className="w-100">
         {/*RICERCA*/}
-        <div>
-          <label htmlFor="search">Ricerca</label>
+        <div className="mb-3">
+          <label htmlFor="search" className="form-label fs-5">
+            Ricerca per nome
+          </label>
           <input
             onChange={(e) => {
               startSearch(e.target.value);
             }}
             type="text"
             id="search"
+            className="form-control"
+            style={{ width: "350px" }}
           />
         </div>
 
