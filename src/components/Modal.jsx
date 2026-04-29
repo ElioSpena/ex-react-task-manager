@@ -30,14 +30,14 @@ export default function Modal({
                 </button>
 
                 <button className="btn btn-danger" onClick={onConfirm}>
-                  Conferma
+                  {confirmText}
                 </button>
               </div>
             </div>
           </div>
         </div>
       </>,
-      modalRoot,
+      document.body,
     )
   );
 }

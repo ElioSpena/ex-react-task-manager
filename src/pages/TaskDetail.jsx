@@ -78,6 +78,7 @@ export default function TaskDetail() {
         content={task.description}
         onClose={() => setShowDelete(false)}
         onConfirm={handleDelete}
+        confirmText={"Elimina"}
       />
 
       <EditTaskModal

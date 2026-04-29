@@ -147,9 +147,12 @@ export default function TaskList() {
         <Modal
           show={showModal}
           title={`Eliminazione di ${selectedTaskIds.length} tasks`}
-          content={"Sicuro di voler eliminare queste tasks definitivamente?"}
+          content={
+            <p>Sicuro di voler eliminare queste tasks definitivamente?</p>
+          }
           onClose={() => setShowModal(false)}
           onConfirm={handleDelete}
+          confirmText={"Conferma"}
         />
       </div>
     </section>
