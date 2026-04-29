@@ -8,7 +8,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="border-bottom mb-3">
+    <header className="border-bottom mb-3 fixed-top bg-light">
       <nav className="container d-flex gap-3 py-3 justify-content-center">
         {links.map((l, id) => (
           <NavLink key={id} className="text-decoration-none" to={l.path}>

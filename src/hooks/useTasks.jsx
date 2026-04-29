@@ -1,15 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 
 export default function useTask() {
-  const [tasks, setTasks] = useState([]);
   const url = import.meta.env.VITE_API_URL;
+
+  const [state, dispatch] = useReducer(tasksReducer, []);
+
+  function tasksReducer(state, action) {
+    switch (action.type) {
+      case "SET_TASKS":
+        return action.payload;
+      case "ADD_TASK":
+        return [...state, action.payload];
+      case "REMOVE_TASK":
+        return state.filter((t) => t.id !== action.payload);
+      case "REMOVE_MULTIPLE":
+        return state.filter((t) => !action.payload.includes(t.id));
+      case "UPDATE_TASK":
+        return state.map((t) =>
+          t.id === action.payload.id ? action.payload : t,
+        );
+      default:
+        return state;
+    }
+  }
 
   useEffect(() => {
     (async () => {
       try {
         const resp = await fetch(`${url}/tasks`);
         const data = await resp.json();
-        setTasks(data);
+        dispatch({ type: "SET_TASKS", payload: data });
       } catch (err) {
         console.log(err.message);
       }
@@ -19,7 +39,7 @@ export default function useTask() {
   //CREATE TASK
 
   const addTask = async (task) => {
-    if (tasks.some((t) => t.title === task.title)) {
+    if (state.some((t) => t.title === task.title)) {
       throw new Error("Task già esistente!");
     }
     const resp = await fetch(`${url}/tasks`, {
@@ -35,7 +55,7 @@ export default function useTask() {
     if (!createdTask.success) {
       throw new Error(createdTask.message);
     }
-    setTasks((prev) => [...prev, createdTask.task]);
+    dispatch({ type: "ADD_TASK", payload: createdTask.task });
     return createdTask.task;
   };
 
@@ -46,34 +66,52 @@ export default function useTask() {
     if (!data.success) {
       throw new Error(data.message);
     }
-    setTasks((prev) => prev.filter((t) => t.id !== taskId));
-    return taskId;
+
+    dispatch({ type: "REMOVE_TASK", payload: taskId });
   };
+
+  //DELETE MULTIPLE TASKS
 
   const removeMultipleTask = async (arrayTaskId) => {
     const results = await Promise.allSettled(
       arrayTaskId.map((id) => removeTask(id)),
     );
 
-    results.forEach((result) => {
-      if (result.status === "fulfilled") {
-        setTasks((prev) => prev.filter((t) => t.id !== result.value));
+    const successfulIds = [];
+    const failedIds = [];
+
+    results.forEach((res) => {
+      if (res.status === "fulfilled") {
+        successfulIds.push(res.value);
       } else {
-        throw new Error(`Impossibile eliminare la task: ${result.value}`);
+        failedIds.push(res.reason);
       }
     });
+
+    if (successfulIds.length > 0) {
+      dispatch({
+        type: "REMOVE_MULTIPLE",
+        payload: successfulIds,
+      });
+    }
+
+    if (failedIds.length > 0) {
+      throw new Error(
+        `Errore eliminazione task: ${failedIds.map((f) => f.message).join(", ")}`,
+      );
+    }
   };
 
   //UPDATE TASK
   const updateTask = async (updatedTask) => {
     if (
-      tasks.some(
+      state.some(
         (t) => t.title === updatedTask.title && t.id !== updatedTask.id,
       )
     ) {
       throw new Error("Task già esistente!");
     }
-    
+
     const resp = await fetch(`${url}/tasks/${updatedTask.id}`, {
       method: "PUT",
       headers: {
@@ -88,16 +126,13 @@ export default function useTask() {
       throw new Error(data.message);
     }
 
-    setTasks((prev) =>
-      prev.map((t) => (t.id === updatedTask.id ? data.task : t)),
-    );
+    dispatch({ type: "UPDATE_TASK", payload: data.task });
 
     return data.task;
   };
 
   return {
-    tasks,
-    setTasks,
+    tasks: state,
     addTask,
     removeTask,
     removeMultipleTask,
