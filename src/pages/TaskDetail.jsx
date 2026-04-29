@@ -13,6 +13,8 @@ export default function TaskDetail() {
   const [showEdit, setShowEdit] = useState(false);
 
   const task = tasks.find((t) => t.id === Number(id));
+
+  /* DELETE */
   async function handleDelete() {
     try {
       const resp = await removeTask(Number(id));
@@ -22,6 +24,8 @@ export default function TaskDetail() {
       alert(err.message);
     }
   }
+
+  /*   UPDATE */
 
   async function handleUpdate(updatedTask) {
     try {
