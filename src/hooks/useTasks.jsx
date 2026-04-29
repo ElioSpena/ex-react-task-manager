@@ -44,6 +44,21 @@ export default function useTask() {
       throw new Error(data.message);
     }
     setTasks((prev) => prev.filter((t) => t.id !== taskId));
+    return taskId;
+  };
+
+  const removeMultipleTask = async (arrayTaskId) => {
+    const results = await Promise.allSettled(
+      arrayTaskId.map((id) => removeTask(id)),
+    );
+
+    results.forEach((result) => {
+      if (result.status === "fulfilled") {
+        setTasks((prev) => prev.filter((t) => t.id !== result.value));
+      } else {
+        throw new Error(`Impossibile eliminare la task: ${result.value}`);
+      }
+    });
   };
 
   //UPDATE TASK
@@ -69,5 +84,12 @@ export default function useTask() {
     return data.task;
   };
 
-  return { tasks, setTasks, addTask, removeTask, updateTask };
+  return {
+    tasks,
+    setTasks,
+    addTask,
+    removeTask,
+    removeMultipleTask,
+    updateTask,
+  };
 }

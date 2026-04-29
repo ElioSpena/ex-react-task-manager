@@ -3,7 +3,7 @@ import { useCallback, useState, useMemo } from "react";
 import TaskRow from "../components/TaskRow";
 
 export default function TaskList() {
-  const { tasks } = useGlobal();
+  const { tasks, removeMultipleTask } = useGlobal();
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,7 +27,7 @@ export default function TaskList() {
     [],
   );
 
-  /*AL CLICK*/
+  /*AL CLICK SULLA TABELLA*/
   function handleClick(value) {
     if (sortBy === value) {
       setSortOrder((prev) => (prev === 1 ? -1 : 1));
@@ -79,7 +79,18 @@ export default function TaskList() {
     );
   }
 
-  console.log(selectedTaskIds);
+  /*HANDLE DELETE*/
+
+  async function handleDelete() {
+    try {
+      await removeMultipleTask(selectedTaskIds);
+      alert("Eliminazione multipla avvenuta");
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setSelectedTaskIds([]);
+    }
+  }
 
   return (
     <section className="container py-4 d-flex justify-content-center">
@@ -123,6 +134,11 @@ export default function TaskList() {
             ))}
           </tbody>
         </table>
+        {selectedTaskIds.length !== 0 && (
+          <button onClick={handleDelete} className="btn btn-danger">
+            Elimina selezionati
+          </button>
+        )}
       </div>
     </section>
   );
