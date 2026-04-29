@@ -7,6 +7,7 @@ export default function TaskList() {
   const [sortBy, setSortBy] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTaskIds, setSelectedTaskIds] = useState([]);
 
   /* DEBOUNCE */
   function debounce(callback, delay) {
@@ -69,6 +70,17 @@ export default function TaskList() {
     return sorted;
   }, [tasks, sortBy, sortOrder, searchQuery]);
 
+  /*TOGGLE*/
+  function toggleSelection(taskId) {
+    setSelectedTaskIds((prev) =>
+      prev.includes(taskId)
+        ? prev.filter((id) => id !== taskId)
+        : [...prev, taskId],
+    );
+  }
+
+  console.log(selectedTaskIds);
+
   return (
     <section className="container py-4 d-flex justify-content-center">
       <div className="w-100">
@@ -102,7 +114,12 @@ export default function TaskList() {
 
           <tbody>
             {sortedTasks.map((task, id) => (
-              <TaskRow key={id} task={task} />
+              <TaskRow
+                key={id}
+                task={task}
+                onToggle={toggleSelection}
+                checked={selectedTaskIds.includes(task.id)}
+              />
             ))}
           </tbody>
         </table>

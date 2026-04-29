@@ -2,7 +2,7 @@ import { memo } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-function TaskRow({ task }) {
+function TaskRow({ task, checked, onToggle }) {
   const status = task.status.toLowerCase();
   const navigate = useNavigate();
   let color;
@@ -20,7 +20,16 @@ function TaskRow({ task }) {
       onClick={() => navigate(`/task/${task.id}`)}
       style={{ cursor: "pointer" }}
     >
-      <td>{task.title}</td>
+      <td className="d-flex gap-3">
+        <input
+          checked={checked}
+          onChange={() => onToggle(task.id)}
+          onClick={(e) => e.stopPropagation()}
+          type="checkbox"
+        />
+        {task.title}
+      </td>
+
       <td style={{ color }}>{task.status}</td>
       <td>{task.createdAt}</td>
     </tr>
