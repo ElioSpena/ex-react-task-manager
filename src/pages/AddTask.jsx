@@ -90,9 +90,6 @@ export default function AddTask() {
                 {value}
               </option>
             ))}
-
-            <option value="Doing">Doing</option>
-            <option value="Done">Done</option>
           </select>
         </div>
 

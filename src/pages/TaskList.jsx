@@ -1,6 +1,7 @@
 import { useGlobal } from "../context/GlobalContext";
 import { useCallback, useState, useMemo } from "react";
 import TaskRow from "../components/TaskRow";
+import Modal from "../components/Modal";
 
 export default function TaskList() {
   const { tasks, removeMultipleTask } = useGlobal();
@@ -8,6 +9,8 @@ export default function TaskList() {
   const [sortOrder, setSortOrder] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTaskIds, setSelectedTaskIds] = useState([]);
+
+  const [showModal, setShowModal] = useState(false);
 
   /* DEBOUNCE */
   function debounce(callback, delay) {
@@ -85,6 +88,7 @@ export default function TaskList() {
     try {
       await removeMultipleTask(selectedTaskIds);
       alert("Eliminazione multipla avvenuta");
+      setShowModal(false);
     } catch (err) {
       alert(err.message);
     } finally {
@@ -135,10 +139,18 @@ export default function TaskList() {
           </tbody>
         </table>
         {selectedTaskIds.length !== 0 && (
-          <button onClick={handleDelete} className="btn btn-danger">
+          <button onClick={() => setShowModal(true)} className="btn btn-danger">
             Elimina selezionati
           </button>
         )}
+
+        <Modal
+          show={showModal}
+          title={`Eliminazione di ${selectedTaskIds.length} tasks`}
+          content={"Sicuro di voler eliminare queste tasks definitivamente?"}
+          onClose={() => setShowModal(false)}
+          onConfirm={handleDelete}
+        />
       </div>
     </section>
   );
