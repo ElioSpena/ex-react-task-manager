@@ -19,6 +19,9 @@ export default function useTask() {
   //CREATE TASK
 
   const addTask = async (task) => {
+    if (tasks.some((t) => t.title === task.title)) {
+      throw new Error("Task già esistente!");
+    }
     const resp = await fetch(`${url}/tasks`, {
       method: "POST",
       headers: {
@@ -63,6 +66,14 @@ export default function useTask() {
 
   //UPDATE TASK
   const updateTask = async (updatedTask) => {
+    if (
+      tasks.some(
+        (t) => t.title === updatedTask.title && t.id !== updatedTask.id,
+      )
+    ) {
+      throw new Error("Task già esistente!");
+    }
+    
     const resp = await fetch(`${url}/tasks/${updatedTask.id}`, {
       method: "PUT",
       headers: {
